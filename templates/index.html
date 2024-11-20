@@ -5,33 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formatador de Dados</title>
     <link rel="stylesheet" href="/static/styles.css">
-    <script>
-        async function formatData() {
-            const inputData = document.getElementById("input_data").value;
-            const response = await fetch("/format", {
-                method: "POST",
-                headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: `input_data=${encodeURIComponent(inputData)}`
-            });
-            const result = await response.json();
-            document.getElementById("output_data").value = result.formatted_data;
-        }
-
-        function copyToClipboard() {
-            const outputData = document.getElementById("output_data");
-            outputData.select();
-            document.execCommand("copy");
-            alert("Dados copiados para a área de transferência!");
-        }
-    </script>
 </head>
 <body>
     <div class="container">
         <h1>Formatador de Dados</h1>
-        <textarea id="input_data" placeholder="Cole os dados aqui..." rows="10"></textarea>
-        <button onclick="formatData()">Formatar Dados</button>
-        <textarea id="output_data" placeholder="Dados formatados aparecerão aqui..." rows="10" readonly></textarea>
-        <button onclick="copyToClipboard()">Copiar para Área de Transferência</button>
+        <textarea id="inputData" placeholder="Cole aqui os dados para formatar"></textarea>
+        <button id="formatButton">Formatar Dados</button>
+        <textarea id="outputData" readonly placeholder="Os dados formatados aparecerão aqui"></textarea>
+        <button id="copyButton">Copiar Dados</button>
+        <div class="item-count" id="itemCount"></div>
     </div>
+    <script>
+        const formatButton = document.getElementById("formatButton");
+        const copyButton = document.getElementById("copyButton");
+        const inputData = document.getElementById("inputData");
+        const outputData = document.getElementById("outputData");
+        const itemCount = document.getElementById("itemCount");
+
+        formatButton.addEventListener("click", async () => {
+            const response = await fetch("/format", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: `input_data=${encodeURIComponent(inputData.value)}`,
+            });
+            const data = await response.json();
+            const formattedData = data.formatted_data;
+            outputData.value = formattedData;
+
+            const itemCountValue = formattedData.split("\n").filter(line => line.trim() !== "").length;
+            itemCount.textContent = `Número de itens formatados: ${itemCountValue}`;
+        });
+
+        copyButton.addEventListener("click", () => {
+            outputData.select();
+            document.execCommand("copy");
+
+            const itemCountValue = outputData.value.split("\n").filter(line => line.trim() !== "").length;
+            alert(`Você acabou de copiar ${itemCountValue} dados!`);
+        });
+    </script>
 </body>
 </html>

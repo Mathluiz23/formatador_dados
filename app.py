@@ -11,25 +11,40 @@ def clean_and_format_data(input_data):
     unique_entries = set()
 
     for line in lines:
+        # Remover palavras específicas e caracteres desnecessários
         clean_line = re.sub(r"(salvar|remover|teste|testess)", "", line, flags=re.IGNORECASE)
         clean_line = re.sub(r"[^\w\s\-çáéíóúâêîôûãõàèìòù]", "", clean_line, flags=re.UNICODE)
         clean_line = clean_line.strip()
 
+        # Corrigir formato sem o separador "-"
         if "-" not in clean_line:
             parts = clean_line.split(maxsplit=1)
             if len(parts) == 2:
                 clean_line = f"{parts[0].strip()} - {parts[1].strip()}"
 
-        parts = clean_line.split("-")
+        # Verificar se a linha segue o formato correto "SIGLA - VALOR"
+        parts = clean_line.split("-", maxsplit=1)
         if len(parts) == 2:
             sigla = parts[0].strip().upper()
             valor = parts[1].strip()
 
-            if re.match(r"^[A-Z]+$", sigla) and valor:
-                entry = f"{sigla} - {valor}"
-                if entry not in unique_entries:
-                    unique_entries.add(entry)
-                    formatted_data.append(entry)
+            # Validar SIGLA (deve conter apenas letras maiúsculas)
+            if re.match(r"^[A-Z]+$", sigla):
+                # Manter apenas palavras válidas no VALOR
+                valor_parts = valor.split()
+                valor = " ".join(
+                    [word for word in valor_parts if len(word) > 1 and word.isalpha()]
+                )
+
+                # Remover qualquer coisa além do primeiro valor válido
+                valor = re.sub(r"\s+[^\s]*$", "", valor)
+
+                # Garantir que o valor final é válido e não vazio
+                if valor:
+                    entry = f"{sigla} - {valor}"
+                    if entry not in unique_entries:  # Evitar duplicatas
+                        unique_entries.add(entry)
+                        formatted_data.append(entry)
 
     return "\n".join(formatted_data)
 
