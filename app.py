@@ -10,8 +10,8 @@ def clean_and_format_data(input_data):
     formatted_data = []
 
     for line in lines:
-        clean_line = re.sub(r"[^a-zA-Z0-9\s\-]", "", line)
-        clean_line = re.sub(r"(salvar|remover|teste|testess)", "", clean_line, flags=re.IGNORECASE)
+        clean_line = re.sub(r"(salvar|remover|teste|testess)", "", line, flags=re.IGNORECASE)
+        clean_line = re.sub(r"[^\w\s\-çáéíóúâêîôûãõàèìòù]", "", clean_line, flags=re.UNICODE)
         clean_line = clean_line.strip()
 
         if "-" not in clean_line:
@@ -19,10 +19,11 @@ def clean_and_format_data(input_data):
             if len(parts) == 2:
                 clean_line = f"{parts[0].strip()} - {parts[1].strip()}"
 
+        #  "SIGLA - VALOR"
         parts = clean_line.split("-")
         if len(parts) == 2:
             sigla = parts[0].strip().upper()
-            valor = parts[1].strip().split()[0]
+            valor = parts[1].strip()
             if sigla and valor:
                 formatted_data.append(f"{sigla} - {valor}")
 
