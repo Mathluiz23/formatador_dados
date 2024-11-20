@@ -8,7 +8,7 @@ CORS(app)
 def clean_and_format_data(input_data):
     lines = input_data.splitlines()
     formatted_data = []
-    unique_entries = set()  # Usar um conjunto para rastrear combinações únicas
+    unique_entries = set()
 
     for line in lines:
         clean_line = re.sub(r"(salvar|remover|teste|testess)", "", line, flags=re.IGNORECASE)
@@ -25,9 +25,9 @@ def clean_and_format_data(input_data):
             sigla = parts[0].strip().upper()
             valor = parts[1].strip()
 
-            if sigla and valor:
+            if sigla.isalpha() and valor:
                 entry = f"{sigla} - {valor}"
-                if entry not in unique_entries:  # Evitar duplicatas
+                if entry not in unique_entries:
                     unique_entries.add(entry)
                     formatted_data.append(entry)
 
