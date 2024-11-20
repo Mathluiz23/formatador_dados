@@ -25,7 +25,7 @@ def clean_and_format_data(input_data):
             sigla = parts[0].strip().upper()
             valor = parts[1].strip()
 
-            if sigla.isalpha() and valor:
+            if re.match(r"^[A-Z]+$", sigla) and valor:
                 entry = f"{sigla} - {valor}"
                 if entry not in unique_entries:
                     unique_entries.add(entry)
