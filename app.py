@@ -11,14 +11,20 @@ def clean_and_format_data(input_data):
 
     for line in lines:
         clean_line = re.sub(r"[^a-zA-Z0-9\s\-]", "", line)
-        clean_line = re.sub(r"(salvar|remover)", "", clean_line, flags=re.IGNORECASE)
+        clean_line = re.sub(r"(salvar|remover|teste)", "", clean_line, flags=re.IGNORECASE)
         clean_line = clean_line.strip()
+
+        if "-" not in clean_line:
+            parts = clean_line.split(maxsplit=1)
+            if len(parts) == 2:
+                clean_line = f"{parts[0].strip()} - {parts[1].strip()}"
 
         parts = clean_line.split("-")
         if len(parts) == 2:
             sigla = parts[0].strip().upper()
-            valor = parts[1].strip().capitalize()
-            formatted_data.append(f"{sigla} - {valor}")
+            valor = parts[1].strip()
+            if sigla and valor:
+                formatted_data.append(f"{sigla} - {valor}")
 
     return "\n".join(formatted_data)
 
