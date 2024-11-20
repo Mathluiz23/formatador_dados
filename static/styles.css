@@ -1,45 +1,83 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
+    font-family: 'Arial', sans-serif;
+    background: url("/static/W3K.jpg") no-repeat center center fixed;
+    background-size: cover;
     margin: 0;
     padding: 0;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
 
 .container {
-    max-width: 600px;
-    margin: 50px auto;
-    background: #fff;
-    padding: 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    border-radius: 8px;
+    background-color: rgba(0, 0, 0, 0.8);
+    max-width: 700px;
+    width: 700px;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+    text-align: center;
 }
 
 h1 {
-    text-align: center;
+    font-size: 2em;
     margin-bottom: 20px;
+    color: #ffffff; 
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.8);
 }
 
 textarea {
-    width: 100%;
-    margin-bottom: 10px;
-    padding: 10px;
+    width: 600px;
+    margin-bottom: 20px;
     font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    border: none;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #333;
+    box-shadow: 0 4px 10px #0B3D6E;;
+    resize: none;
+}
+
+textarea:focus {
+    outline: none;
+    border: 1px solid #0B3D6E;
+    box-shadow: 0 0 10px #0B3D6E;
 }
 
 button {
-    display: block;
-    width: 100%;
-    padding: 10px;
+    display: flex;
+    margin: auto;
+    align-items: center;
+    justify-content: center;
+    width: 600px;
+    padding: 15px;
     font-size: 16px;
-    background: #007BFF;
+    font-weight: bold;
+    background: #1E90FF;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 10px;
     cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    margin-bottom: 20px;
 }
 
 button:hover {
-    background: #0056b3;
+    background: #104E8B;
+    transform: translateY(-2px);
+}
+
+button:active {
+    background: #0B3D6E;
+    transform: scale(0.98);
+}
+
+textarea::placeholder {
+    color: #777;
+}
+
+button + textarea {
+    margin-top: 20px;
 }
