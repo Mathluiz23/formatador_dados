@@ -10,6 +10,14 @@
     <div class="container">
         <h1>Formatador de Dados</h1>
         <textarea id="inputData" placeholder="Cole aqui os dados para formatar"></textarea>
+
+        <!-- Opções de formato -->
+        <div>
+            <label><input type="radio" name="formatType" value="capitalize" checked> Primeira letra maiúscula</label>
+            <label><input type="radio" name="formatType" value="uppercase"> Tudo em maiúsculas</label>
+            <label><input type="radio" name="formatType" value="original"> Manter formato original</label>
+        </div>
+
         <button id="formatButton">Formatar Dados</button>
         <textarea id="outputData" readonly placeholder="Os dados formatados aparecerão aqui"></textarea>
         <button id="copyButton">Copiar Dados</button>
@@ -23,15 +31,17 @@
         const itemCount = document.getElementById("itemCount");
 
         formatButton.addEventListener("click", async () => {
+            const formatType = document.querySelector('input[name="formatType"]:checked').value;
             const response = await fetch("/format", {
                 method: "POST",
                 headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: `input_data=${encodeURIComponent(inputData.value)}`,
+                body: `input_data=${encodeURIComponent(inputData.value)}&format_type=${formatType}`,
             });
             const data = await response.json();
             const formattedData = data.formatted_data;
             outputData.value = formattedData;
 
+            // Exibir o número de itens formatados
             const itemCountValue = formattedData.split("\n").filter(line => line.trim() !== "").length;
             itemCount.textContent = `Número de itens formatados: ${itemCountValue}`;
         });
@@ -40,6 +50,7 @@
             outputData.select();
             document.execCommand("copy");
 
+            // Exibir mensagem ao copiar
             const itemCountValue = outputData.value.split("\n").filter(line => line.trim() !== "").length;
             alert(`Você acabou de copiar ${itemCountValue} dados!`);
         });
