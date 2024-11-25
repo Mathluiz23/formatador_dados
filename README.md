@@ -1,7 +1,7 @@
 
 # Formatador de Dados
 
-![Deploy](https://formatador-dados.vercel.app/)
+[Deploy Formatador App](https://formatador-dados.vercel.app/)
 
 Um aplicativo web simples para formatar dados de entrada no formato padrão `SIGLA - VALOR`. Ele remove caracteres desnecessários, palavras extras e espaços, garantindo que os dados sejam limpos e bem estruturados.
 
