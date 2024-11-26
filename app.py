@@ -11,27 +11,49 @@ def clean_and_format_data(input_data, format_type):
     unique_entries = set()
 
     for line in lines:
-        clean_line = re.sub(r"(salvar|remover|teste|botao|onclick|ok|esge|,|\.|`|')", "", line, flags=re.IGNORECASE)
+        clean_line = re.sub(r"(salvar|remover|teste|botao|onclick|ok|esge|,|\.|')", "", line, flags=re.IGNORECASE)
         clean_line = re.sub(r"\s{2,}", " ", clean_line).strip()
 
-        parts = clean_line.split("-", maxsplit=1)
-        if len(parts) == 2:
-            sigla = parts[0].strip().upper()
-            valor = parts[1].strip()
+        if " - " in clean_line:
+            sigla, valor = clean_line.split(" - ", 1)
 
-            if re.match(r"^[A-Z]+$", sigla):
+            sigla = sigla.strip().upper()
+
+            valor = valor.strip()
+            valor = re.sub(r"\s{2,}", " ", valor)
+
+            valor = re.sub(r"\b(salvar|remover|botao|onclick|ok|esge)\b", "", valor, flags=re.IGNORECASE)
+
+            valor_parts = valor.split()
+            valor = " ".join([word for word in valor_parts if len(word) > 1 and word.isalpha()])
+
+            if format_type == "capitalize":
+                valor = valor.title()
+
+            if valor:
+                entry = f"{sigla} - {valor}"
+
+                if entry not in unique_entries:
+                    unique_entries.add(entry)
+                    formatted_data.append(entry)
+
+        else:
+            parts = clean_line.split()
+            if len(parts) > 1:
+                sigla = parts[0].strip().upper()
+                valor = " ".join(parts[1:]).strip()
+
+                valor = re.sub(r"\b(salvar|remover|botao|onclick|ok|esge)\b", "", valor, flags=re.IGNORECASE)
+
                 valor_parts = valor.split()
-                valor = " ".join(
-                    [word for word in valor_parts if len(word) > 1 and word.isalpha()]
-                )
+                valor = " ".join([word for word in valor_parts if len(word) > 1 and word.isalpha()])
 
                 if format_type == "capitalize":
                     valor = valor.title()
-                elif format_type == "uppercase":
-                    valor = valor.upper()
 
                 if valor:
                     entry = f"{sigla} - {valor}"
+
                     if entry not in unique_entries:
                         unique_entries.add(entry)
                         formatted_data.append(entry)
@@ -51,3 +73,5 @@ def format_data():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+
