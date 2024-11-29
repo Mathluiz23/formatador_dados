@@ -9,43 +9,71 @@
 <body>
     <div class="container">
         <h1>Formatador de Dados</h1>
+        
+        <!-- Área de texto para entrada -->
         <textarea id="inputData" placeholder="Cole aqui os dados para formatar"></textarea>
+        
+        <!-- Tipo de dados -->
+        <div>
+            <label for="dataType">Selecione o tipo de dado:</label>
+            <select id="dataType">
+                <option value="sigla">Lista com sigla</option>
+                <option value="sem_sigla">Lista sem sigla</option>
+            </select>
+        </div>
 
         <!-- Opções de formato -->
         <div>
+            <p>Escolha o formato do texto:</p>
             <label><input type="radio" name="formatType" value="capitalize" checked> Primeira letra maiúscula</label>
             <label><input type="radio" name="formatType" value="uppercase"> Tudo em maiúsculas</label>
             <label><input type="radio" name="formatType" value="original"> Manter formato original</label>
         </div>
 
+        <!-- Botão de formatação -->
         <button id="formatButton">Formatar Dados</button>
+        
+        <!-- Área de texto para saída -->
         <textarea id="outputData" readonly placeholder="Os dados formatados aparecerão aqui"></textarea>
+        
+        <!-- Botão para copiar os dados -->
         <button id="copyButton">Copiar Dados</button>
+        
+        <!-- Contagem de itens formatados -->
         <div class="item-count" id="itemCount"></div>
     </div>
+
     <script>
         const formatButton = document.getElementById("formatButton");
         const copyButton = document.getElementById("copyButton");
         const inputData = document.getElementById("inputData");
         const outputData = document.getElementById("outputData");
         const itemCount = document.getElementById("itemCount");
+        const dataType = document.getElementById("dataType");
 
+        // Evento para formatar os dados
         formatButton.addEventListener("click", async () => {
             const formatType = document.querySelector('input[name="formatType"]:checked').value;
+            const selectedDataType = dataType.value;
+
             const response = await fetch("/format", {
                 method: "POST",
                 headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                body: `input_data=${encodeURIComponent(inputData.value)}&format_type=${formatType}`,
+                body: `input_data=${encodeURIComponent(inputData.value)}&format_type=${formatType}&data_type=${selectedDataType}`,
             });
+
             const data = await response.json();
             const formattedData = data.formatted_data;
+
+            // Exibir os dados formatados
             outputData.value = formattedData;
 
-            // Exibir o número de itens formatados
+            // Atualizar contagem de itens formatados
             const itemCountValue = formattedData.split("\n").filter(line => line.trim() !== "").length;
             itemCount.textContent = `Número de itens formatados: ${itemCountValue}`;
         });
 
+        // Evento para copiar os dados formatados
         copyButton.addEventListener("click", () => {
             outputData.select();
             document.execCommand("copy");
