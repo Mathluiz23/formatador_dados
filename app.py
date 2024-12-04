@@ -20,7 +20,7 @@ def clean_and_format_data(input_data, format_type, data_type):
                 sigla = sigla.strip().upper()
                 valor = valor.strip()
                 valor = re.sub(r"\s{2,}", " ", valor)
-                valor = re.sub(r"\b(salvar|remover|teste|botao|onclick|ok|esge)\b", "", valor, flags=re.IGNORECASE)
+                valor = re.sub(r"\b(salvar|remover|teste|botao|onclick|ok|esge|não|sim)\b", "", valor, flags=re.IGNORECASE)
                 valor_parts = valor.split()
                 valor = " ".join([word for word in valor_parts if len(word) > 1 and word.isalpha()])
 
@@ -42,7 +42,7 @@ def clean_and_format_data(input_data, format_type, data_type):
                     sigla = parts[0].strip().upper()
                     valor = parts[1].strip()
                     valor = re.sub(r"\s{2,}", " ", valor)
-                    valor = re.sub(r"\b(salvar|remover|teste|botao|onclick|ok|esge)\b", "", valor, flags=re.IGNORECASE)
+                    valor = re.sub(r"\b(salvar|remover|teste|botao|onclick|ok|esge|não|sim)\b", "", valor, flags=re.IGNORECASE)
                     valor_parts = valor.split()
                     valor = " ".join([word for word in valor_parts if len(word) > 1 and word.isalpha()])
 
