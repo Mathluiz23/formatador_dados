@@ -60,7 +60,7 @@ def clean_and_format_data(input_data, format_type, data_type):
 
     elif data_type == "sem_sigla":
         for line in lines:
-            clean_line = re.sub(r"(Valor|Editar|Excluir|Desabilitado|Não)", "", line, flags=re.IGNORECASE)
+            clean_line = re.sub(r"(Valor|Editar|Excluir|Desabilitado)", "", line, flags=re.IGNORECASE)
             clean_line = re.sub(r"\s{2,}", " ", clean_line).strip()
 
             values = re.split(r"\s{2,}", clean_line)
