@@ -1,5 +1,5 @@
 
-# Formatador de Dados W3K
+# Formatador de Dados W3K ▶️
 
 [Deploy Formatador App](https://formatador-dados.vercel.app/)
 
